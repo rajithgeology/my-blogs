@@ -1,155 +1,370 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="The Mind Behind Your Mind — How Your Subconscious Quietly Shapes Everyday Life">
-<title>The Mind Behind Your Mind</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="The Mind Behind Your Mind — How Your Subconscious Quietly Shapes Everyday Life.">
+<title>The Mind Behind Your Mind — Mind & Meaning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet">
 <style>
-* { box-sizing: border-box; }
-body {
-    margin: 0;
-    font-family: Georgia, "Times New Roman", serif;
-    color: #252525;
-    background: #faf9f6;
-    line-height: 1.8;
+:root {
+  --bg:#090d18;
+  --panel:#101728;
+  --panel-2:#131c30;
+  --text:#eef3f7;
+  --muted:#9ba8ba;
+  --soft:#c8d0dc;
+  --line:rgba(255,255,255,.09);
+  --accent:#8ee3cf;
+  --accent-2:#a78bfa;
+  --accent-3:#7dd3fc;
+  --quote:rgba(142,227,207,.08);
+  --shadow:0 24px 70px rgba(0,0,0,.32);
+  --content:760px;
+  --font-size:18px;
+  --lh:1.9;
 }
-header {
-    border-bottom: 1px solid #e6e2da;
-    background: rgba(250,249,246,.96);
-    position: sticky;
-    top: 0;
-    z-index: 10;
+:root.light {
+  --bg:#f4f6f8;
+  --panel:#ffffff;
+  --panel-2:#eef2f6;
+  --text:#17202b;
+  --muted:#657181;
+  --soft:#384556;
+  --line:rgba(20,30,45,.11);
+  --accent:#087f72;
+  --accent-2:#7655cf;
+  --accent-3:#1683b6;
+  --quote:rgba(8,127,114,.07);
+  --shadow:0 24px 70px rgba(27,39,55,.12);
 }
-.nav {
-    max-width: 1050px;
-    margin: auto;
-    padding: 18px 24px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:90px}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:"DM Sans",system-ui,sans-serif;
+  transition:background .25s,color .25s;
 }
-.logo {
-    font-family: Arial, sans-serif;
-    font-weight: 700;
-    font-size: 18px;
-    letter-spacing: .2px;
+body.focus .reader-shell{grid-template-columns:minmax(0,1fr)}
+body.focus .sidebar,body.focus .right-tools{display:none}
+a{color:inherit;text-decoration:none}
+button,input{font:inherit}
+button{color:inherit}
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));z-index:1000}
+.topbar{
+  position:sticky;top:0;z-index:900;height:72px;
+  background:color-mix(in srgb,var(--bg) 78%,transparent);
+  backdrop-filter:blur(18px);border-bottom:1px solid var(--line);
 }
-.nav a {
-    color: #333;
-    text-decoration: none;
-    margin-left: 22px;
-    font-family: Arial, sans-serif;
-    font-size: 14px;
+.topbar-inner{height:100%;max-width:1440px;margin:auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:-.02em}
+.brand-mark{width:34px;height:34px;border-radius:11px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:grid;place-items:center;color:#091018;font-family:"Playfair Display";font-weight:700}
+.top-actions{display:flex;align-items:center;gap:8px}
+.icon-btn,.tool-btn{
+  border:1px solid var(--line);background:var(--panel);border-radius:11px;
+  min-height:40px;padding:0 12px;cursor:pointer;transition:.2s;
 }
-.hero {
-    max-width: 900px;
-    margin: auto;
-    padding: 95px 24px 55px;
-    text-align: center;
+.icon-btn{width:40px;padding:0;display:grid;place-items:center;font-size:17px}
+.icon-btn:hover,.tool-btn:hover,.nav-btn:hover{transform:translateY(-1px);border-color:color-mix(in srgb,var(--accent) 50%,var(--line));}
+.reader-shell{
+  max-width:1440px;margin:0 auto;padding:34px 24px 90px;
+  display:grid;grid-template-columns:270px minmax(0,1fr) 220px;gap:42px;
 }
-.kicker {
-    font-family: Arial, sans-serif;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    font-size: 12px;
-    color: #777;
+.sidebar{position:sticky;top:98px;height:calc(100vh - 120px);overflow:auto;padding-right:8px}
+.side-label,.tool-label{font-size:11px;text-transform:uppercase;letter-spacing:.16em;color:var(--muted);font-weight:700}
+.side-title{font-family:"Playfair Display";font-size:22px;margin:9px 0 18px}
+.toc-item{display:grid;grid-template-columns:34px 1fr 18px;gap:9px;align-items:center;padding:9px 10px;border-radius:10px;color:var(--muted);margin:2px 0;transition:.2s}
+.toc-item:hover{background:var(--panel);color:var(--text)}
+.toc-item.active{background:var(--panel-2);color:var(--text);box-shadow:inset 3px 0 0 var(--accent)}
+.toc-num{font-size:11px;letter-spacing:.08em}
+.toc-title{font-size:13px;line-height:1.35}
+.toc-check{font-size:12px;color:var(--accent);opacity:0}
+.toc-item.done .toc-check{opacity:1}
+.article{min-width:0}
+.hero{padding:42px 0 50px;border-bottom:1px solid var(--line);margin-bottom:56px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--accent);font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:700}
+.eyebrow:before{content:"";width:28px;height:1px;background:currentColor}
+.hero h1{font-family:"Playfair Display",serif;font-weight:600;font-size:clamp(48px,7vw,88px);line-height:.98;letter-spacing:-.045em;margin:18px 0 18px;max-width:900px}
+.hero h1 em{color:var(--accent);font-weight:500}
+.hero-sub{font-family:"Playfair Display";font-size:clamp(20px,2.2vw,28px);font-style:italic;color:var(--soft);max-width:700px;line-height:1.35}
+.meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+.pill{padding:8px 11px;border:1px solid var(--line);border-radius:999px;background:var(--panel);color:var(--muted);font-size:12px}
+.chapter,.intro{scroll-margin-top:100px}
+.intro-card{background:linear-gradient(145deg,var(--panel),var(--panel-2));border:1px solid var(--line);border-radius:24px;padding:clamp(24px,5vw,48px);box-shadow:var(--shadow);margin-bottom:72px}
+.chapter{padding:30px 0 76px;border-bottom:1px solid var(--line);margin-bottom:70px}
+.chapter-kicker{font-size:12px;letter-spacing:.18em;color:var(--accent);font-weight:700;margin-bottom:10px}
+.chapter h2{font-family:"Playfair Display";font-size:clamp(36px,5vw,58px);line-height:1.04;letter-spacing:-.035em;margin:0 0 36px;max-width:700px}
+.chapter-body{max-width:var(--content);margin:auto}
+.chapter-body p,.intro-card p{font-size:var(--font-size);line-height:var(--lh);color:var(--soft);margin:0 0 25px}
+.chapter-body p:first-child,.intro-card p:first-child{color:var(--text)}
+.chapter-body h3,.intro-card h3{font-family:"Playfair Display";font-size:25px;margin:44px 0 14px;color:var(--text)}
+.chapter-body ul{margin:0 0 28px;padding-left:24px;color:var(--soft)}
+.chapter-body li{font-size:var(--font-size);line-height:1.75;padding:3px 0}
+blockquote{
+  margin:30px 0;padding:22px 25px;border-left:3px solid var(--accent);
+  background:var(--quote);border-radius:0 14px 14px 0;
+  font-family:"Playfair Display";font-size:clamp(21px,2.4vw,28px);line-height:1.45;color:var(--text);
 }
-.hero h1 {
-    font-size: clamp(42px, 7vw, 72px);
-    line-height: 1.05;
-    margin: 18px 0;
-    font-weight: 600;
+.flow{margin:30px 0;padding:16px 18px;text-align:center;border:1px dashed color-mix(in srgb,var(--accent) 45%,var(--line));border-radius:14px;background:var(--quote);font-weight:600;letter-spacing:.02em;color:var(--text)}
+.chapter-nav{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:46px auto 0;max-width:var(--content)}
+.nav-btn,.complete-btn{border:1px solid var(--line);background:var(--panel);border-radius:12px;min-height:42px;padding:0 13px;display:flex;align-items:center;gap:8px;cursor:pointer;transition:.2s;font-size:13px}
+.complete-btn{color:var(--muted)}
+.complete-btn.done{border-color:var(--accent);color:var(--accent)}
+.right-tools{position:sticky;top:98px;height:max-content}
+.tool-card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:12px}
+.tool-title{font-size:13px;font-weight:700;margin:5px 0 12px}
+.tool-row{display:flex;gap:7px;flex-wrap:wrap}
+.tool-row button{border:1px solid var(--line);background:var(--panel-2);border-radius:9px;padding:7px 9px;cursor:pointer;font-size:12px}
+.tool-row button:hover{border-color:var(--accent)}
+.search-box{display:flex;gap:7px}
+.search-box input{width:100%;min-width:0;border:1px solid var(--line);background:var(--panel-2);color:var(--text);border-radius:9px;padding:9px 10px;outline:none}
+.search-results{margin-top:8px;font-size:12px;color:var(--muted);line-height:1.5}
+.mobile-toc{display:none}
+.search-hit{background:rgba(250,204,21,.25);border-radius:3px}
+mark.search-hit{color:inherit}
+.footer{text-align:center;color:var(--muted);font-size:12px;padding:40px 0}
+@media(max-width:1100px){
+  .reader-shell{grid-template-columns:230px minmax(0,1fr)}
+  .right-tools{display:none}
 }
-.subtitle {
-    font-size: 21px;
-    color: #686868;
-    max-width: 650px;
-    margin: auto;
+@media(max-width:760px){
+  .topbar{height:64px}
+  .topbar-inner{padding:0 14px}
+  .brand span:last-child{display:none}
+  .reader-shell{display:block;padding:18px 16px 60px}
+  .sidebar{display:none}
+  .mobile-toc{display:block;margin:8px 0 24px}
+  .mobile-toc summary{cursor:pointer;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:13px;font-weight:700}
+  .mobile-toc .toc-list{background:var(--panel);border:1px solid var(--line);border-top:0;border-radius:0 0 12px 12px;padding:7px}
+  .hero{padding:26px 0 36px;margin-bottom:36px}
+  .hero h1{font-size:48px}
+  .intro-card{padding:24px;border-radius:18px;margin-bottom:50px}
+  .chapter{padding:15px 0 56px;margin-bottom:50px}
+  .chapter h2{font-size:38px;margin-bottom:28px}
+  .chapter-nav{flex-wrap:wrap}
+  .complete-btn{order:3;width:100%;justify-content:center}
+  .nav-btn{flex:1;justify-content:center}
 }
-.meta {
-    margin-top: 28px;
-    font-family: Arial, sans-serif;
-    font-size: 13px;
-    color: #888;
-}
-article {
-    max-width: 760px;
-    margin: 0 auto 100px;
-    padding: 0 24px;
-}
-article h2 {
-    font-family: Arial, sans-serif;
-    font-size: 30px;
-    margin-top: 70px;
-    padding-top: 30px;
-    border-top: 1px solid #e3dfd7;
-}
-article h3 {
-    font-size: 25px;
-    line-height: 1.3;
-    margin-top: 42px;
-    margin-bottom: 12px;
-}
-article p {
-    font-size: 18px;
-    margin: 0 0 20px;
-}
-article ul {
-    padding-left: 28px;
-    margin: 12px 0 24px;
-}
-article li {
-    font-size: 18px;
-    margin: 6px 0;
-}
-article h1 { display:none; }
-footer {
-    border-top: 1px solid #e3dfd7;
-    padding: 35px 24px;
-    text-align: center;
-    color: #777;
-    font-family: Arial, sans-serif;
-    font-size: 13px;
-}
-@media (max-width: 600px) {
-    .nav { padding: 15px 18px; }
-    .nav a { margin-left: 12px; }
-    .hero { padding: 70px 20px 40px; }
-    article { padding: 0 20px; }
-    article p, article li { font-size: 17px; }
+@media(prefers-reduced-motion:reduce){
+  *{scroll-behavior:auto!important;transition:none!important}
 }
 </style>
 </head>
-
 <body>
-<header>
-    <div class="nav">
-        <div class="logo">My Blog</div>
-        <nav>
-            <a href="index.html">Home</a>
-            <a href="blog.html">Blog</a>
-        </nav>
+<div class="progress-bar" id="progress"></div>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="./index.html" aria-label="Back to Mind & Meaning">
+      <span class="brand-mark">M</span><span>Mind & Meaning</span>
+    </a>
+    <div class="top-actions">
+      <button class="icon-btn" id="focusBtn" title="Focus mode">◌</button>
+      <button class="icon-btn" id="themeBtn" title="Toggle theme">☾</button>
+      <a class="tool-btn" href="./index.html">← Home</a>
     </div>
+  </div>
 </header>
 
-<section class="hero">
-    <div class="kicker">A personal exploration of everyday psychology</div>
-    <h1>The Mind Behind Your Mind</h1>
-    <div class="subtitle">How Your Subconscious Quietly Shapes Everyday Life</div>
-    <div class="meta">September 8, 2026 · Personal Blog</div>
-</section>
+<div class="reader-shell">
+  <aside class="sidebar">
+    <div class="side-label">Reading map</div>
+    <div class="side-title">The chapters</div>
+    <nav id="toc">
+      <a class="toc-item active" href="#intro" data-chapter="intro">
+        <span class="toc-num">00</span><span class="toc-title">Introduction</span><span class="toc-check">✓</span>
+      </a>
+      <a class="toc-item" href="#chapter-1" data-chapter="1">
+        <span class="toc-num">01</span>
+        <span class="toc-title">The Invisible Passenger</span>
+        <span class="toc-check" aria-hidden="true">✓</span>
+    </a>
+<a class="toc-item" href="#chapter-2" data-chapter="2">
+        <span class="toc-num">02</span>
+        <span class="toc-title">Your Brain Loves Shortcuts</span>
+        <span class="toc-check" aria-hidden="true">✓</span>
+    </a>
+<a class="toc-item" href="#chapter-3" data-chapter="3">
+        <span class="toc-num">03</span>
+        <span class="toc-title">The First Impression Trap</span>
+        <span class="toc-check" aria-hidden="true">✓</span>
+    </a>
+<a class="toc-item" href="#chapter-4" data-chapter="4">
+        <span class="toc-num">04</span>
+        <span class="toc-title">Why Familiar Things Feel Better</span>
+        <span class="toc-check" aria-hidden="true">✓</span>
+    </a>
+<a class="toc-item" href="#chapter-5" data-chapter="5">
+        <span class="toc-num">05</span>
+        <span class="toc-title">Your Past Is Sitting in the Present</span>
+        <span class="toc-check" aria-hidden="true">✓</span>
+    </a>
+<a class="toc-item" href="#chapter-6" data-chapter="6">
+        <span class="toc-num">06</span>
+        <span class="toc-title">Why We Procrastinate</span>
+        <span class="toc-check" aria-hidden="true">✓</span>
+    </a>
+<a class="toc-item" href="#chapter-7" data-chapter="7">
+        <span class="toc-num">07</span>
+        <span class="toc-title">The Phone in Your Pocket Is Training Your Brain</span>
+        <span class="toc-check" aria-hidden="true">✓</span>
+    </a>
+<a class="toc-item" href="#chapter-8" data-chapter="8">
+        <span class="toc-num">08</span>
+        <span class="toc-title">Why We Want What Other People Have</span>
+        <span class="toc-check" aria-hidden="true">✓</span>
+    </a>
+<a class="toc-item" href="#chapter-9" data-chapter="9">
+        <span class="toc-num">09</span>
+        <span class="toc-title">The Price That Changes Your Mind</span>
+        <span class="toc-check" aria-hidden="true">✓</span>
+    </a>
+<a class="toc-item" href="#chapter-10" data-chapter="10">
+        <span class="toc-num">10</span>
+        <span class="toc-title">The Stories We Tell Ourselves</span>
+        <span class="toc-check" aria-hidden="true">✓</span>
+    </a>
+<a class="toc-item" href="#chapter-11" data-chapter="11">
+        <span class="toc-num">11</span>
+        <span class="toc-title">Emotions Make Decisions Before Logic Arrives</span>
+        <span class="toc-check" aria-hidden="true">✓</span>
+    </a>
+<a class="toc-item" href="#chapter-12" data-chapter="12">
+        <span class="toc-num">12</span>
+        <span class="toc-title">Why We Remember Some Things and Forget Others</span>
+        <span class="toc-check" aria-hidden="true">✓</span>
+    </a>
+<a class="toc-item" href="#chapter-13" data-chapter="13">
+        <span class="toc-num">13</span>
+        <span class="toc-title">The People Around You Are Changing You</span>
+        <span class="toc-check" aria-hidden="true">✓</span>
+    </a>
+<a class="toc-item" href="#chapter-14" data-chapter="14">
+        <span class="toc-num">14</span>
+        <span class="toc-title">Breaking an Automatic Habit</span>
+        <span class="toc-check" aria-hidden="true">✓</span>
+    </a>
+<a class="toc-item" href="#chapter-15" data-chapter="15">
+        <span class="toc-num">15</span>
+        <span class="toc-title">Becoming More Conscious</span>
+        <span class="toc-check" aria-hidden="true">✓</span>
+    </a>
+<a class="toc-item" href="#chapter-16" data-chapter="16">
+        <span class="toc-num">16</span>
+        <span class="toc-title">Conclusion</span>
+        <span class="toc-check" aria-hidden="true">✓</span>
+    </a>
+    </nav>
+  </aside>
 
-<article>
-<h1>The Mind Behind Your Mind</h1>
-<p>How Your Subconscious Quietly Shapes Everyday Life</p>
-<h2>Introduction</h2>
-<h3>Are You Really Making Your Own Decisions?</h3>
-<p>You wake up in the morning.</p>
+  <main class="article">
+    <details class="mobile-toc">
+      <summary>☰ Explore chapters</summary>
+      <div class="toc-list">
+        <nav><a class="toc-item" href="#chapter-1" data-chapter="1">
+        <span class="toc-num">01</span>
+        <span class="toc-title">The Invisible Passenger</span>
+        <span class="toc-check" aria-hidden="true">✓</span>
+    </a>
+<a class="toc-item" href="#chapter-2" data-chapter="2">
+        <span class="toc-num">02</span>
+        <span class="toc-title">Your Brain Loves Shortcuts</span>
+        <span class="toc-check" aria-hidden="true">✓</span>
+    </a>
+<a class="toc-item" href="#chapter-3" data-chapter="3">
+        <span class="toc-num">03</span>
+        <span class="toc-title">The First Impression Trap</span>
+        <span class="toc-check" aria-hidden="true">✓</span>
+    </a>
+<a class="toc-item" href="#chapter-4" data-chapter="4">
+        <span class="toc-num">04</span>
+        <span class="toc-title">Why Familiar Things Feel Better</span>
+        <span class="toc-check" aria-hidden="true">✓</span>
+    </a>
+<a class="toc-item" href="#chapter-5" data-chapter="5">
+        <span class="toc-num">05</span>
+        <span class="toc-title">Your Past Is Sitting in the Present</span>
+        <span class="toc-check" aria-hidden="true">✓</span>
+    </a>
+<a class="toc-item" href="#chapter-6" data-chapter="6">
+        <span class="toc-num">06</span>
+        <span class="toc-title">Why We Procrastinate</span>
+        <span class="toc-check" aria-hidden="true">✓</span>
+    </a>
+<a class="toc-item" href="#chapter-7" data-chapter="7">
+        <span class="toc-num">07</span>
+        <span class="toc-title">The Phone in Your Pocket Is Training Your Brain</span>
+        <span class="toc-check" aria-hidden="true">✓</span>
+    </a>
+<a class="toc-item" href="#chapter-8" data-chapter="8">
+        <span class="toc-num">08</span>
+        <span class="toc-title">Why We Want What Other People Have</span>
+        <span class="toc-check" aria-hidden="true">✓</span>
+    </a>
+<a class="toc-item" href="#chapter-9" data-chapter="9">
+        <span class="toc-num">09</span>
+        <span class="toc-title">The Price That Changes Your Mind</span>
+        <span class="toc-check" aria-hidden="true">✓</span>
+    </a>
+<a class="toc-item" href="#chapter-10" data-chapter="10">
+        <span class="toc-num">10</span>
+        <span class="toc-title">The Stories We Tell Ourselves</span>
+        <span class="toc-check" aria-hidden="true">✓</span>
+    </a>
+<a class="toc-item" href="#chapter-11" data-chapter="11">
+        <span class="toc-num">11</span>
+        <span class="toc-title">Emotions Make Decisions Before Logic Arrives</span>
+        <span class="toc-check" aria-hidden="true">✓</span>
+    </a>
+<a class="toc-item" href="#chapter-12" data-chapter="12">
+        <span class="toc-num">12</span>
+        <span class="toc-title">Why We Remember Some Things and Forget Others</span>
+        <span class="toc-check" aria-hidden="true">✓</span>
+    </a>
+<a class="toc-item" href="#chapter-13" data-chapter="13">
+        <span class="toc-num">13</span>
+        <span class="toc-title">The People Around You Are Changing You</span>
+        <span class="toc-check" aria-hidden="true">✓</span>
+    </a>
+<a class="toc-item" href="#chapter-14" data-chapter="14">
+        <span class="toc-num">14</span>
+        <span class="toc-title">Breaking an Automatic Habit</span>
+        <span class="toc-check" aria-hidden="true">✓</span>
+    </a>
+<a class="toc-item" href="#chapter-15" data-chapter="15">
+        <span class="toc-num">15</span>
+        <span class="toc-title">Becoming More Conscious</span>
+        <span class="toc-check" aria-hidden="true">✓</span>
+    </a>
+<a class="toc-item" href="#chapter-16" data-chapter="16">
+        <span class="toc-num">16</span>
+        <span class="toc-title">Conclusion</span>
+        <span class="toc-check" aria-hidden="true">✓</span>
+    </a></nav>
+      </div>
+    </details>
+
+    <section class="hero">
+      <div class="eyebrow">Mind & Meaning · Long Read</div>
+      <h1>The Mind Behind <em>Your Mind</em></h1>
+      <div class="hero-sub">How Your Subconscious Quietly Shapes Everyday Life</div>
+      <div class="meta">
+        <span class="pill">16 chapters</span>
+        <span class="pill">~20 min read</span>
+        <span class="pill" id="progressText">0% complete</span>
+      </div>
+    </section>
+
+    <section class="intro-card" id="intro">
+      <div class="chapter-kicker">INTRODUCTION</div>
+      <h2 style="font-family:'Playfair Display';font-size:clamp(32px,4vw,48px);margin:8px 0 28px;letter-spacing:-.03em">Are You Really Making Your Own Decisions?</h2>
+      <p>You wake up in the morning.</p>
 <p>Before you have properly opened your eyes, your hand reaches for your phone. You check the time. Then a notification. You open it. One message becomes another. You check Instagram. Then YouTube. Then WhatsApp. Suddenly, fifteen minutes have passed. You put the phone down and think:</p>
-<p>“Why did I do that?”</p>
+<blockquote>“Why did I do that?”</blockquote>
 <p>Nobody forced you. You didn’t make a plan the night before saying, “Tomorrow morning I will spend fifteen minutes scrolling.” It simply happened. This happens throughout the day. You choose a particular chair without thinking. You take the same route even when another route might be faster. You prefer a familiar brand in a supermarket. You feel uncomfortable around someone before they have actually done anything wrong. You postpone an important task and clean your desk instead. You hear an old song and suddenly remember a person you haven’t thought about in years. You become angry at a sentence and reply immediately. Later, you wonder:</p>
-<p>“Why did I react like that?”</p>
+<blockquote>“Why did I react like that?”</blockquote>
 <p>These moments reveal something interesting about the human mind. We like to believe that we carefully think about our decisions and then act. But much of everyday life doesn’t work that way. A large amount of our behaviour happens automatically.</p>
 <p>Our brain notices patterns, remembers experiences, predicts what might happen, looks for shortcuts, responds to emotions and repeats familiar behaviours—often without asking our conscious permission.</p>
 <p>This is where the everyday idea of the subconscious mind becomes useful.</p>
@@ -158,23 +373,28 @@ footer {
 <p>Your mind works in a similar way. The purpose of this article is not to teach you how to “control your subconscious mind.” That would be unrealistic. Instead, it has a simpler purpose:</p>
 <p>To help you notice what your mind is doing before it decides for you.</p>
 <p>Because awareness creates a small space between a thought and an action. And sometimes, that small space is enough to change a decision.</p>
-<h2>Chapter 1</h2>
-<h3>The Invisible Passenger</h3>
-<p>Imagine that you are driving a car on a road you have travelled hundreds of times. You are talking to someone sitting beside you. You are thinking about work. Perhaps you are listening to music. Twenty minutes later, you arrive at your destination. Then you suddenly realize:</p>
-<p>“I don’t remember most of the journey.”</p>
+    </section>
+
+    
+<section class="chapter" id="chapter-1" data-chapter="1">
+  <div class="chapter-kicker">CHAPTER 01</div>
+  <h2>The Invisible Passenger</h2>
+  <div class="chapter-body">
+    <p>Imagine that you are driving a car on a road you have travelled hundreds of times. You are talking to someone sitting beside you. You are thinking about work. Perhaps you are listening to music. Twenty minutes later, you arrive at your destination. Then you suddenly realize:</p>
+<blockquote>“I don’t remember most of the journey.”</blockquote>
 <p>You were awake. You were looking at the road. You were controlling the car. But you weren’t consciously thinking about every movement. You didn’t say:</p>
-<p>“Now I will move my foot slightly.”</p>
-<p>“Now I will turn the steering wheel.”</p>
-<p>“Now I will check the mirror.”</p>
+<blockquote>“Now I will move my foot slightly.”</blockquote>
+<blockquote>“Now I will turn the steering wheel.”</blockquote>
+<blockquote>“Now I will check the mirror.”</blockquote>
 <p>Years of practice allowed many of these actions to become automatic. This is one of the most useful things about the human brain. If we had to consciously control everything, everyday life would be exhausting. Imagine having to consciously think about breathing or walking or remembering how to use a spoon or how to type each individual letter. Instead, the brain learns patterns. Once a pattern becomes familiar, it requires less conscious attention.</p>
 <h3>The brain is an energy-saving machine</h3>
 <p>Your brain is constantly trying to work efficiently. It doesn’t want to spend the same amount of mental effort on a task you have performed ten thousand times. This is why habits become automatic. You brush your teeth without planning every movement. You recognize your friend’s face instantly. You know how to unlock your phone without thinking about the individual movements. You can probably type your own name without looking at the keyboard. The conscious mind is not doing everything. Some work has been handed over to automatic processes.</p>
 <h3>But there is a catch</h3>
 <p>Automatic behaviour is useful when the habit is useful. It becomes a problem when the habit continues even after it stops helping you.</p>
 <p>Consider this: You are sitting at your desk. You feel slightly bored. Your hand reaches for your phone. You open a social media app. You scroll. You weren’t consciously deciding:</p>
-<p>“I have evaluated my options and concluded that scrolling is the best use of the next ten minutes.”</p>
+<blockquote>“I have evaluated my options and concluded that scrolling is the best use of the next ten minutes.”</blockquote>
 <p>It was simply a learned pattern.</p>
-<p>Boredom → Phone → Scrolling</p>
+<div class="flow">Boredom → Phone → Scrolling</div>
 <p>The pattern can become so familiar that the feeling of boredom itself becomes a signal. You don’t need to think. Your brain already knows what comes next.</p>
 <h3>The strange part</h3>
 <p>Sometimes we notice the action before we notice the decision. You may suddenly realize: “I’m already scrolling.” That sentence is important.</p>
@@ -184,22 +404,28 @@ footer {
 <p>Don’t try to change them.</p>
 <p>Just observe.</p>
 <p>Maybe:</p>
-<p>You check your phone after waking.</p>
-<p>You open email whenever you sit at your computer.</p>
-<p>You drink tea at a particular time.</p>
-<p>You sit in the same place.</p>
-<p>You check the door twice before leaving.</p>
+<ul><li>You check your phone after waking.</li><li>You open email whenever you sit at your computer.</li><li>You drink tea at a particular time.</li><li>You sit in the same place.</li><li>You check the door twice before leaving.</li></ul>
 <p>The goal is not to judge yourself.</p>
 <p>Simply notice. Because the first step in changing an automatic behaviour is seeing it.</p>
 <h3>Think about it</h3>
 <p>How many decisions did you make today consciously—and how many simply happened?</p>
-<h2>Chapter 2</h2>
-<h3>Your Brain Loves Shortcuts</h3>
-<p>Imagine walking into a supermarket. There are fifty different brands of toothpaste. Do you carefully study every ingredient, compare every price, calculate how long each tube will last and research every manufacturer? Probably not. You recognize a brand. You remember using it before. You pick it up. Decision finished. This is not laziness. Your brain is using a shortcut.</p>
+  </div>
+  <div class="chapter-nav">
+    <a href="#intro" class="nav-btn prev">← <span>Previous</span></a>
+    <button class="complete-btn" data-complete="1"><span>✓</span> Mark chapter complete</button>
+    <a href="#chapter-2" class="nav-btn next"><span>Next chapter</span> →</a>
+  </div>
+</section>
+
+<section class="chapter" id="chapter-2" data-chapter="2">
+  <div class="chapter-kicker">CHAPTER 02</div>
+  <h2>Your Brain Loves Shortcuts</h2>
+  <div class="chapter-body">
+    <p>Imagine walking into a supermarket. There are fifty different brands of toothpaste. Do you carefully study every ingredient, compare every price, calculate how long each tube will last and research every manufacturer? Probably not. You recognize a brand. You remember using it before. You pick it up. Decision finished. This is not laziness. Your brain is using a shortcut.</p>
 <p>Psychologists call many of these shortcuts heuristics.</p>
 <p>A heuristic is simply a quick mental rule that helps us make decisions without analysing everything.</p>
 <p>For example:</p>
-<p>“I have used this before, so it is probably okay.”</p>
+<blockquote>“I have used this before, so it is probably okay.”</blockquote>
 <p>That is a shortcut. And most of the time, shortcuts are extremely useful. Imagine if every decision required a full investigation.</p>
 <p>What should I eat?</p>
 <p>Which shirt should I wear?</p>
@@ -210,35 +436,45 @@ footer {
 <p>You would spend your entire day making decisions. So your brain simplifies.</p>
 <h3>The problem with shortcuts</h3>
 <p>A shortcut can save time. But it can also lead you in the wrong direction. Suppose a restaurant has a very long queue. You might think:</p>
-<p>“Lots of people are waiting. The food must be good.”</p>
+<blockquote>“Lots of people are waiting. The food must be good.”</blockquote>
 <p>Maybe it is.</p>
 <p>But perhaps the restaurant is simply small. The queue gives you a clue, but it isn’t proof. Another person might speak very confidently. You may immediately think:</p>
-<p>“He knows what he is talking about.”</p>
+<blockquote>“He knows what he is talking about.”</blockquote>
 <p>But confidence and knowledge are not the same thing. Our brain often uses visible clues to make invisible judgments.</p>
 <h3>Cognitive bias</h3>
 <p>A cognitive bias is a predictable tendency in the way our thinking can become distorted. It doesn’t mean that your brain is broken. It means the same mental shortcut that helps you sometimes can mislead you in other situations.</p>
 <p>One famous example is confirmation bias.</p>
 <p>Confirmation bias means that we tend to notice and prefer information that supports what we already believe. Imagine you believe:</p>
-<p>“People who work from home are less productive.”</p>
+<blockquote>“People who work from home are less productive.”</blockquote>
 <p>You see an article about someone working from home and missing deadlines. You think: “See? I knew it.” But if you see ten people working from home successfully, you may not pay the same attention. Your brain is not necessarily lying to you. It is selectively paying attention.</p>
 <h3>A useful question</h3>
 <p>Whenever you strongly agree with something, ask:</p>
-<p>“What evidence would make me change my mind?”</p>
+<blockquote>“What evidence would make me change my mind?”</blockquote>
 <p>If the answer is “nothing,” you may not be evaluating the idea anymore. You may be protecting it.</p>
-<p>Another shortcut: familiarity</p>
+<h3>Another shortcut: familiarity</h3>
 <p>Suppose two products are almost identical. One is from a brand you’ve heard about many times. The other is completely unknown. You may automatically trust the familiar one. Again, this isn’t always irrational. Familiarity can be useful. But it can also become:</p>
 <p>Familiar = good</p>
 <p>which isn’t necessarily true.</p>
 <h3>Try this today</h3>
 <p>The next time you make a small purchase, stop for five seconds. Ask:</p>
-<p>“Am I choosing this because it is actually the best option, or because I already know it?”</p>
+<blockquote>“Am I choosing this because it is actually the best option, or because I already know it?”</blockquote>
 <p>You don’t have to change your choice. Just identify the reason.</p>
 <h3>Think about it</h3>
 <p>How many of your preferences are really preferences—and how many are habits disguised as preferences?</p>
-<h2>Chapter 3</h2>
-<h3>The First Impression Trap</h3>
-<p>You meet someone for the first time. They shake your hand confidently. They smile. They speak clearly. Within seconds, you may think:</p>
-<p>“This person seems intelligent.”</p>
+  </div>
+  <div class="chapter-nav">
+    <a href="#chapter-1" class="nav-btn prev">← <span>Previous</span></a>
+    <button class="complete-btn" data-complete="2"><span>✓</span> Mark chapter complete</button>
+    <a href="#chapter-3" class="nav-btn next"><span>Next chapter</span> →</a>
+  </div>
+</section>
+
+<section class="chapter" id="chapter-3" data-chapter="3">
+  <div class="chapter-kicker">CHAPTER 03</div>
+  <h2>The First Impression Trap</h2>
+  <div class="chapter-body">
+    <p>You meet someone for the first time. They shake your hand confidently. They smile. They speak clearly. Within seconds, you may think:</p>
+<blockquote>“This person seems intelligent.”</blockquote>
 <p>But what exactly did you observe? You observed confidence. You observed a smile. You observed clear speech. You did not observe intelligence directly. Your brain filled in the missing information. This happens extremely quickly.</p>
 <h3>The halo effect</h3>
 <p>The halo effect is the tendency for one positive quality to influence our overall impression of a person. If someone looks professional, we may assume they are competent. If someone speaks confidently, we may assume they are knowledgeable. If someone is attractive, we may unconsciously rate other qualities more positively. The reverse can happen too. One negative characteristic can colour our entire opinion. Suppose a colleague arrives late to a meeting. You may think: “He is irresponsible.” But perhaps he was stuck in traffic. One event has now become a story about his personality.</p>
@@ -259,28 +495,48 @@ footer {
 <h3>Think about it</h3>
 <p>How many people have you judged based on a single moment?</p>
 <p>And how many people have perhaps judged you based on one?</p>
-<h2>Chapter 4</h2>
-<h3>Why Familiar Things Feel Better</h3>
-<p>Have you ever listened to a song for the first time and thought: “What’s so special about this?” Then you hear it again. And again. After a few weeks, you start liking it. You may even wonder: “Why didn’t I like it initially?” Something interesting happened. Your brain became familiar with it.</p>
+  </div>
+  <div class="chapter-nav">
+    <a href="#chapter-2" class="nav-btn prev">← <span>Previous</span></a>
+    <button class="complete-btn" data-complete="3"><span>✓</span> Mark chapter complete</button>
+    <a href="#chapter-4" class="nav-btn next"><span>Next chapter</span> →</a>
+  </div>
+</section>
+
+<section class="chapter" id="chapter-4" data-chapter="4">
+  <div class="chapter-kicker">CHAPTER 04</div>
+  <h2>Why Familiar Things Feel Better</h2>
+  <div class="chapter-body">
+    <p>Have you ever listened to a song for the first time and thought: “What’s so special about this?” Then you hear it again. And again. After a few weeks, you start liking it. You may even wonder: “Why didn’t I like it initially?” Something interesting happened. Your brain became familiar with it.</p>
 <h3>The mere exposure effect</h3>
 <p>The mere exposure effect describes our tendency to develop greater liking or preference for something simply because we have encountered it repeatedly. Think about advertisements. You may see the same company logo hundreds of times. You don’t consciously study it. But your brain recognizes it. Recognition creates familiarity. Familiarity often feels comfortable. And comfort can sometimes be mistaken for quality.</p>
 <h3>This happens with people too</h3>
 <p>A new colleague may initially feel strange. You don’t know their communication style. You don’t know their sense of humor. You don’t know what to expect. After several months, their presence feels normal. Nothing magical happened. Your brain built a model of them. It learned: “This person is familiar.”</p>
 <h3>Familiarity can influence relationships</h3>
 <p>Sometimes we continue friendships simply because they are familiar. Sometimes we stay in routines because changing them feels uncomfortable. Sometimes we repeatedly choose the same food, same entertainment, same route and same type of people. This isn’t necessarily bad. Familiarity provides stability. But there is a question worth asking:</p>
-<p>“Do I prefer this because it is good for me, or because I already know it?”</p>
+<blockquote>“Do I prefer this because it is good for me, or because I already know it?”</blockquote>
 <h3>Try something small</h3>
 <p>Change one harmless routine. Take a different route. Try a different food. Read about a topic you normally ignore. Talk to someone outside your usual group. The goal isn’t to reject your preferences. It is to remind your brain:</p>
 <p>Familiarity is not the same as truth.</p>
 <h3>Think about it</h3>
 <p>What would you choose if you had never seen your current favourite option before?</p>
-<h2>Chapter 5</h2>
-<h3>Your Past Is Sitting in the Present</h3>
-<p>A little boy touches a hot pan. He gets burned. The next time he sees the pan, he is careful. He doesn’t need to calculate the probability of getting burned again. His brain learned something. This is a simple example of conditioning. Conditioning means that our brain can learn associations between things. A smell can become associated with a person. A place can become associated with a memory. A sound can become associated with danger. A song can become associated with happiness.</p>
+  </div>
+  <div class="chapter-nav">
+    <a href="#chapter-3" class="nav-btn prev">← <span>Previous</span></a>
+    <button class="complete-btn" data-complete="4"><span>✓</span> Mark chapter complete</button>
+    <a href="#chapter-5" class="nav-btn next"><span>Next chapter</span> →</a>
+  </div>
+</section>
+
+<section class="chapter" id="chapter-5" data-chapter="5">
+  <div class="chapter-kicker">CHAPTER 05</div>
+  <h2>Your Past Is Sitting in the Present</h2>
+  <div class="chapter-body">
+    <p>A little boy touches a hot pan. He gets burned. The next time he sees the pan, he is careful. He doesn’t need to calculate the probability of getting burned again. His brain learned something. This is a simple example of conditioning. Conditioning means that our brain can learn associations between things. A smell can become associated with a person. A place can become associated with a memory. A sound can become associated with danger. A song can become associated with happiness.</p>
 <h3>Your brain stores relationships, not just facts</h3>
 <p>Suppose you once received terrible news while sitting in a particular room. Years later, you enter that room. You may feel uncomfortable without immediately knowing why. The room itself may not be dangerous.</p>
 <p>But your brain remembers the association.</p>
-<p>Room → bad experience → uncomfortable feeling</p>
+<div class="flow">Room → bad experience → uncomfortable feeling</div>
 <p>The conscious mind may say: “There is nothing wrong here.” The emotional system may still say: “Something feels wrong.”</p>
 <h3>This explains some strange reactions</h3>
 <p>You may dislike public speaking because you were laughed at once. You may avoid asking questions because someone embarrassed you in school. You may become nervous before opening an email because previous emails contained bad news. Your current situation may be different. But the brain uses the past to predict the future. This is one of its most important jobs.</p>
@@ -290,14 +546,24 @@ footer {
 <p>A person who was once embarrassed speaking in public may continue avoiding public speaking even after becoming much more capable. The old lesson remains active.</p>
 <h3>A useful question</h3>
 <p>When you experience a strong reaction, ask:</p>
-<p>“Is this reaction only about what is happening now?”</p>
+<blockquote>“Is this reaction only about what is happening now?”</blockquote>
 <p>Maybe it is. Maybe it isn’t.</p>
 <p>You don’t need to immediately discover the exact childhood event responsible. Just notice that your reaction may have a history.</p>
 <h3>Think about it</h3>
 <p>Have you ever reacted strongly to something and later realized that the situation reminded you of something from the past?</p>
-<h2>Chapter 6</h2>
-<h3>Why We Procrastinate</h3>
-<p>You have an important task. You know it needs to be done. You even know that delaying it will make tomorrow harder. Yet you suddenly decide: “I should clean my room first.” Then: “I’ll just check my messages.” Then: “Maybe I’ll watch one video.” An hour disappears. You call yourself lazy. But procrastination is often more complicated than laziness.</p>
+  </div>
+  <div class="chapter-nav">
+    <a href="#chapter-4" class="nav-btn prev">← <span>Previous</span></a>
+    <button class="complete-btn" data-complete="5"><span>✓</span> Mark chapter complete</button>
+    <a href="#chapter-6" class="nav-btn next"><span>Next chapter</span> →</a>
+  </div>
+</section>
+
+<section class="chapter" id="chapter-6" data-chapter="6">
+  <div class="chapter-kicker">CHAPTER 06</div>
+  <h2>Why We Procrastinate</h2>
+  <div class="chapter-body">
+    <p>You have an important task. You know it needs to be done. You even know that delaying it will make tomorrow harder. Yet you suddenly decide: “I should clean my room first.” Then: “I’ll just check my messages.” Then: “Maybe I’ll watch one video.” An hour disappears. You call yourself lazy. But procrastination is often more complicated than laziness.</p>
 <h3>The present vs the future</h3>
 <p>Your brain experiences rewards differently depending on when they arrive. Imagine two choices:</p>
 <p>Option A: Watch entertaining videos right now.</p>
@@ -310,30 +576,40 @@ footer {
 <p>An uncertain decision.</p>
 <p>A fear of failure.</p>
 <p>A task can create a feeling like:</p>
-<p>“I don’t want to deal with this.”</p>
+<blockquote>“I don’t want to deal with this.”</blockquote>
 <p>So we escape. The escape itself feels good. For a moment, That temporary relief teaches the brain:</p>
-<p>Difficult task → avoid → feel better</p>
+<div class="flow">Difficult task → avoid → feel better</div>
 <p>And the pattern becomes stronger.</p>
 <h3>The five-minute trick</h3>
 <p>Instead of saying: “I need to finish this report.” say: “I will work on it for five minutes.” Five minutes feels less threatening. Once you start, continuing becomes easier. The goal is not to trick yourself. It is to reduce the psychological barrier to starting.</p>
 <h3>Make the first step tiny</h3>
 <p>Don’t write:</p>
-<p>“Complete project.”</p>
+<blockquote>“Complete project.”</blockquote>
 <p>Write:</p>
-<p>“Open the document.”</p>
+<blockquote>“Open the document.”</blockquote>
 <p>Then:</p>
-<p>“Write the heading.”</p>
+<blockquote>“Write the heading.”</blockquote>
 <p>Then:</p>
-<p>“Write the first paragraph.”</p>
+<blockquote>“Write the first paragraph.”</blockquote>
 <p>Your brain often struggles more with starting than with continuing.</p>
 <h3>Try this today</h3>
 <p>Choose one task you have been avoiding. Work on it for exactly five minutes. After five minutes, you may stop. But if you want to continue, continue. You may discover that the hardest part was not the work. It was crossing the starting line.</p>
 <h3>Think about it</h3>
 <p>What are you avoiding because it is difficult—and what are you avoiding because it makes you uncomfortable?</p>
-<h2>Chapter 7</h2>
-<h3>The Phone in Your Pocket Is Training Your Brain</h3>
-<p>Imagine you are sitting alone. Nothing is happening. You feel slightly bored. Your hand reaches for your phone. You unlock it. There is no important message. Still, you open an app. Why? Because your brain has learned a pattern.</p>
-<p>Boredom → Phone → Something interesting</p>
+  </div>
+  <div class="chapter-nav">
+    <a href="#chapter-5" class="nav-btn prev">← <span>Previous</span></a>
+    <button class="complete-btn" data-complete="6"><span>✓</span> Mark chapter complete</button>
+    <a href="#chapter-7" class="nav-btn next"><span>Next chapter</span> →</a>
+  </div>
+</section>
+
+<section class="chapter" id="chapter-7" data-chapter="7">
+  <div class="chapter-kicker">CHAPTER 07</div>
+  <h2>The Phone in Your Pocket Is Training Your Brain</h2>
+  <div class="chapter-body">
+    <p>Imagine you are sitting alone. Nothing is happening. You feel slightly bored. Your hand reaches for your phone. You unlock it. There is no important message. Still, you open an app. Why? Because your brain has learned a pattern.</p>
+<div class="flow">Boredom → Phone → Something interesting</div>
 <h3>Notifications are tiny signals</h3>
 <p>A notification can become a cue. A cue is something that triggers a behaviour. A sound. A vibration. A visual symbol. Even seeing your phone can become a cue. Eventually, you may not need a notification. The mere feeling of boredom can be enough.</p>
 <h3>Variable rewards</h3>
@@ -348,16 +624,23 @@ footer {
 <h3>Create friction</h3>
 <p>If something is too easy, you do it more. So make unwanted behaviour slightly harder.</p>
 <p>For example:</p>
-<p>Keep distracting apps off the home screen.</p>
-<p>Put the phone away while working.</p>
-<p>Don’t keep it beside your pillow.</p>
-<p>Log out of apps you compulsively check.</p>
+<ul><li>Keep distracting apps off the home screen.</li><li>Put the phone away while working.</li><li>Don’t keep it beside your pillow.</li><li>Log out of apps you compulsively check.</li></ul>
 <p>At the same time, make useful behaviour easier. Keep a book visible. Keep your workout clothes ready. Keep your task open on the computer. Your environment can help your brain choose.</p>
 <h3>Think about it</h3>
 <p>When you reach for your phone, are you looking for information—or simply escaping a moment of boredom?</p>
-<h2>Chapter 8</h2>
-<h3>Why We Want What Other People Have</h3>
-<p>Imagine two restaurants. Restaurant A is almost empty.  Restaurant B has a long queue. Which one looks better? Most people will feel some attraction toward Restaurant B. Why? Because other people’s behaviour becomes information.</p>
+  </div>
+  <div class="chapter-nav">
+    <a href="#chapter-6" class="nav-btn prev">← <span>Previous</span></a>
+    <button class="complete-btn" data-complete="7"><span>✓</span> Mark chapter complete</button>
+    <a href="#chapter-8" class="nav-btn next"><span>Next chapter</span> →</a>
+  </div>
+</section>
+
+<section class="chapter" id="chapter-8" data-chapter="8">
+  <div class="chapter-kicker">CHAPTER 08</div>
+  <h2>Why We Want What Other People Have</h2>
+  <div class="chapter-body">
+    <p>Imagine two restaurants. Restaurant A is almost empty.  Restaurant B has a long queue. Which one looks better? Most people will feel some attraction toward Restaurant B. Why? Because other people’s behaviour becomes information.</p>
 <h3>Social proof</h3>
 <p>Social proof means that we often look at what other people are doing when deciding what is correct, desirable or safe. If thousands of people bought something, we may assume it is good. If everyone in a meeting agrees, we may become less likely to disagree. If everyone is standing in a queue, we may assume there is a reason. This is useful because other people sometimes have information we don’t have. But it can also produce mistakes.</p>
 <h3>The crowd can be wrong</h3>
@@ -368,24 +651,34 @@ footer {
 <p>You see someone’s success. You don’t see their complete life. You see a selected moment. But your brain compares that selected moment with your entire reality. That is an unfair comparison.</p>
 <h3>A powerful question</h3>
 <p>Before copying a decision, ask:</p>
-<p>“If nobody else knew about this choice, would I still want it?”</p>
+<blockquote>“If nobody else knew about this choice, would I still want it?”</blockquote>
 <p>If yes, great.</p>
 <p>If no, perhaps the social influence is stronger than you realized.</p>
 <h3>Think about it</h3>
 <p>How many things do you want because you genuinely want them—and how many because you saw someone else having them?</p>
-<h2>Chapter 9</h2>
-<h3>The Price That Changes Your Mind</h3>
-<p>Imagine you see a watch. Price: ₹10,000 You think: “Expensive.” Now you see another watch. Original price: ₹25,000 Today: ₹10,000 Suddenly ₹10,000 feels different. Same price. Different feeling. Why? Because your brain has been given a reference point.</p>
+  </div>
+  <div class="chapter-nav">
+    <a href="#chapter-7" class="nav-btn prev">← <span>Previous</span></a>
+    <button class="complete-btn" data-complete="8"><span>✓</span> Mark chapter complete</button>
+    <a href="#chapter-9" class="nav-btn next"><span>Next chapter</span> →</a>
+  </div>
+</section>
+
+<section class="chapter" id="chapter-9" data-chapter="9">
+  <div class="chapter-kicker">CHAPTER 09</div>
+  <h2>The Price That Changes Your Mind</h2>
+  <div class="chapter-body">
+    <p>Imagine you see a watch. Price: ₹10,000 You think: “Expensive.” Now you see another watch. Original price: ₹25,000 Today: ₹10,000 Suddenly ₹10,000 feels different. Same price. Different feeling. Why? Because your brain has been given a reference point.</p>
 <h3>Anchoring</h3>
 <p>Anchoring means that an initial number or piece of information can influence later judgments. The first number becomes an “anchor.” Everything else is compared with it. This happens everywhere. Salary negotiations, Property prices, Discounts, Restaurant menus, Online shopping, Even conversations.</p>
 <p>Suppose someone asks:</p>
-<p>“Would you pay ₹5,000 for this?”</p>
+<blockquote>“Would you pay ₹5,000 for this?”</blockquote>
 <p>Even if you initially thought ₹3,000, the ₹5,000 number can influence your thinking.</p>
 <h3>Discounts are psychologically powerful</h3>
-<p>Suppose a product is: ₹5,000 → ₹2,000 You feel that you are saving ₹3,000. But what if the product is actually worth only ₹1,500? You aren’t saving ₹3,000. You are spending ₹500 more than its value. The original price becomes a distraction.</p>
+<div class="flow">Suppose a product is: ₹5,000 → ₹2,000 You feel that you are saving ₹3,000. But what if the product is actually worth only ₹1,500? You aren’t saving ₹3,000. You are spending ₹500 more than its value. The original price becomes a distraction.</div>
 <h3>How to avoid the anchor</h3>
 <p>Ask:</p>
-<p>“What would I think this was worth if I had never seen the original price?”</p>
+<blockquote>“What would I think this was worth if I had never seen the original price?”</blockquote>
 <p>That question removes some of the influence of the first number.</p>
 <h3>Try this</h3>
 <p>The next time you see a discounted product, cover the original price mentally. Look only at the current price.</p>
@@ -393,18 +686,28 @@ footer {
 <p>“Would I buy this for this amount?” If not, the discount doesn’t matter.</p>
 <h3>Think about it</h3>
 <p>How many times have you bought something because it looked like a bargain rather than because you actually needed it?</p>
-<h2>Chapter 10</h2>
-<h3>The Stories We Tell Ourselves</h3>
-<p>Consider two people who fail an examination. The first says: “I am stupid.” The second says: “I didn’t prepare properly this time.” The event is the same. The story is different. And that story can influence what happens next.</p>
+  </div>
+  <div class="chapter-nav">
+    <a href="#chapter-8" class="nav-btn prev">← <span>Previous</span></a>
+    <button class="complete-btn" data-complete="9"><span>✓</span> Mark chapter complete</button>
+    <a href="#chapter-10" class="nav-btn next"><span>Next chapter</span> →</a>
+  </div>
+</section>
+
+<section class="chapter" id="chapter-10" data-chapter="10">
+  <div class="chapter-kicker">CHAPTER 10</div>
+  <h2>The Stories We Tell Ourselves</h2>
+  <div class="chapter-body">
+    <p>Consider two people who fail an examination. The first says: “I am stupid.” The second says: “I didn’t prepare properly this time.” The event is the same. The story is different. And that story can influence what happens next.</p>
 <h3>Identity is powerful</h3>
 <p>If you repeatedly tell yourself: “I am lazy.” you may begin to behave according to that identity. If you tell yourself: “I am not good at speaking.” you may avoid speaking. If you avoid it, you get less practice. Because you get less practice, you remain uncomfortable. Then you say: “See? I am bad at speaking.” The belief appears to have been proven. This can become a self-fulfilling prophecy. A self-fulfilling prophecy occurs when a belief influences behaviour in a way that helps create the outcome expected by the belief.</p>
 <h3>Change the sentence</h3>
 <p>Instead of: “I am bad at this.” Try: “I am not good at this yet.” That final word changes the meaning. It turns an identity into a skill gap. A skill can be improved.</p>
 <h3>Be careful with labels</h3>
-<p>“I am an introvert.”</p>
-<p>“I am bad with money.”</p>
-<p>“I am terrible at mathematics.”</p>
-<p>“I am not a morning person.”</p>
+<blockquote>“I am an introvert.”</blockquote>
+<blockquote>“I am bad with money.”</blockquote>
+<blockquote>“I am terrible at mathematics.”</blockquote>
+<blockquote>“I am not a morning person.”</blockquote>
 <p>Sometimes labels are useful descriptions. But sometimes they become restrictions.</p>
 <p>The question is:</p>
 <p>Does this label help me understand myself, or does it give me an excuse not to change?</p>
@@ -412,35 +715,52 @@ footer {
 <p>Write down three negative sentences you frequently tell yourself. Then rewrite each one as a description of behaviour rather than identity.</p>
 <p>For example:</p>
 <p>“I am lazy.” becomes:</p>
-<p>“I often delay tasks that feel difficult.”</p>
+<blockquote>“I often delay tasks that feel difficult.”</blockquote>
 <p>The second statement gives you something you can work with.</p>
 <h3>Think about it</h3>
 <p>What would you attempt if you stopped believing that you were “the kind of person” who couldn’t do it?</p>
-<h2>Chapter 11</h2>
-<h3>Emotions Make Decisions Before Logic Arrives</h3>
-<p>Someone sends you a rude message. You feel angry. You immediately type a reply. Send. Ten minutes later, you read your message again. You think: “Maybe I shouldn’t have sent that.” What changed? The facts didn’t change. Your emotional state changed.</p>
+  </div>
+  <div class="chapter-nav">
+    <a href="#chapter-9" class="nav-btn prev">← <span>Previous</span></a>
+    <button class="complete-btn" data-complete="10"><span>✓</span> Mark chapter complete</button>
+    <a href="#chapter-11" class="nav-btn next"><span>Next chapter</span> →</a>
+  </div>
+</section>
+
+<section class="chapter" id="chapter-11" data-chapter="11">
+  <div class="chapter-kicker">CHAPTER 11</div>
+  <h2>Emotions Make Decisions Before Logic Arrives</h2>
+  <div class="chapter-body">
+    <p>Someone sends you a rude message. You feel angry. You immediately type a reply. Send. Ten minutes later, you read your message again. You think: “Maybe I shouldn’t have sent that.” What changed? The facts didn’t change. Your emotional state changed.</p>
 <h3>Emotion changes perception</h3>
 <p>When we are angry, we notice things differently. When we are afraid, danger becomes more visible. When we are excited, opportunities may look bigger. When we are sad, negative information can feel more important. The world hasn’t necessarily changed. Our mental filter has.</p>
 <h3>Emotional reasoning</h3>
 <p>Emotional reasoning is when we treat our feelings as evidence about reality. For example: “I feel that he doesn’t respect me, so he must not respect me.”</p>
 <p>But:</p>
-<p>Feeling something ≠ proving something.</p>
+<div class="flow">Feeling something ≠ proving something.</div>
 <p>Feelings are real. The conclusion may or may not be accurate.</p>
 <h3>The ten-second pause</h3>
 <p>Before sending an angry message: Stop. Take ten seconds.</p>
 <p>Ask:</p>
-<p>What am I feeling?</p>
-<p>What actually happened?</p>
-<p>What am I assuming?</p>
-<p>Will I still want to send this tomorrow?</p>
+<ul><li>What am I feeling?</li><li>What actually happened?</li><li>What am I assuming?</li><li>Will I still want to send this tomorrow?</li></ul>
 <p>Sometimes the answer will still be yes. That’s okay. The point is not to suppress emotion. The point is to stop emotion from automatically becoming action.</p>
 <h3>Emotion is information, not always instruction</h3>
 <p>Fear can tell you to pay attention. Anger can tell you that something feels unfair. Sadness can tell you that something matters. But none of these automatically tells you exactly what to do. You still have to think.</p>
 <h3>Think about it</h3>
 <p>How many decisions have you made while angry, afraid, excited or hurt that you would have made differently after one night’s sleep?</p>
-<h2>Chapter 12</h2>
-<h3>Why We Remember Some Things and Forget Others</h3>
-<p>Have you ever forgotten where you kept your keys? Then suddenly remembered something embarrassing from ten years ago? You might think: “My memory is terrible.” But memory doesn’t work like a storage box. It isn’t a perfect recording of everything that happened.</p>
+  </div>
+  <div class="chapter-nav">
+    <a href="#chapter-10" class="nav-btn prev">← <span>Previous</span></a>
+    <button class="complete-btn" data-complete="11"><span>✓</span> Mark chapter complete</button>
+    <a href="#chapter-12" class="nav-btn next"><span>Next chapter</span> →</a>
+  </div>
+</section>
+
+<section class="chapter" id="chapter-12" data-chapter="12">
+  <div class="chapter-kicker">CHAPTER 12</div>
+  <h2>Why We Remember Some Things and Forget Others</h2>
+  <div class="chapter-body">
+    <p>Have you ever forgotten where you kept your keys? Then suddenly remembered something embarrassing from ten years ago? You might think: “My memory is terrible.” But memory doesn’t work like a storage box. It isn’t a perfect recording of everything that happened.</p>
 <h3>Attention matters</h3>
 <p>You can’t remember something clearly if you never paid attention to it. Suppose you walk into a room while thinking about an important problem. Later, someone asks: “What colour was the wall?” You may have no idea. Your eyes saw it. But your attention wasn’t focused on it.</p>
 <h3>Emotional events can become memorable</h3>
@@ -453,23 +773,27 @@ footer {
 <p>Ask three friends about a common event from years ago. Compare their descriptions. You may find: Different details, Different interpretations, Different emotional meanings. One person remembers something that another completely forgot. The event was the same. The memories are not.</p>
 <h3>Think about it</h3>
 <p>Which memories from your past might be partly shaped by how you feel about them today?</p>
-<h2>Chapter 13</h2>
-<h3>The People Around You Are Changing You</h3>
-<p>Imagine you spend six months with a group of people who exercise regularly. At first, you don’t exercise. Then one day someone says: “Come with us.” You go. Then again. Eventually, exercising becomes normal. Now imagine the opposite. You spend six months with people who regularly stay awake until 3 a.m., order unhealthy food and never exercise. Their behaviour can also begin to feel normal. This is the power of environment.</p>
+  </div>
+  <div class="chapter-nav">
+    <a href="#chapter-11" class="nav-btn prev">← <span>Previous</span></a>
+    <button class="complete-btn" data-complete="12"><span>✓</span> Mark chapter complete</button>
+    <a href="#chapter-13" class="nav-btn next"><span>Next chapter</span> →</a>
+  </div>
+</section>
+
+<section class="chapter" id="chapter-13" data-chapter="13">
+  <div class="chapter-kicker">CHAPTER 13</div>
+  <h2>The People Around You Are Changing You</h2>
+  <div class="chapter-body">
+    <p>Imagine you spend six months with a group of people who exercise regularly. At first, you don’t exercise. Then one day someone says: “Come with us.” You go. Then again. Eventually, exercising becomes normal. Now imagine the opposite. You spend six months with people who regularly stay awake until 3 a.m., order unhealthy food and never exercise. Their behaviour can also begin to feel normal. This is the power of environment.</p>
 <h3>Normal is not always natural</h3>
 <p>We often think:</p>
-<p>“This is just how I am.”</p>
+<blockquote>“This is just how I am.”</blockquote>
 <p>But some of what feels natural may simply be what we repeatedly see. If everyone around you complains about work, complaining can feel normal. If everyone around you saves money, saving can feel normal. If everyone checks their phone constantly, constant checking can feel normal.</p>
 <h3>Social conditioning</h3>
 <p>Social conditioning refers to the way our environment and social experiences influence what we consider normal, acceptable or expected.</p>
 <p>We learn from:</p>
-<p>Parents</p>
-<p>Friends</p>
-<p>Teachers</p>
-<p>Colleagues</p>
-<p>Culture</p>
-<p>Media</p>
-<p>Online communities</p>
+<ul><li>Parents</li><li>Friends</li><li>Teachers</li><li>Colleagues</li><li>Culture</li><li>Media</li><li>Online communities</li></ul>
 <p>Much of this learning happens without a formal lesson. Nobody has to say: “This is how you should behave.” We observe. We repeat. We adapt.</p>
 <h3>Your information environment matters too</h3>
 <p>People are not the only influence. Your daily inputs matter. If you spend two hours every day consuming angry content, your mind spends two hours practising attention toward anger. If you constantly consume short videos, your brain repeatedly practises switching attention quickly. If you read deeply every day, sustained attention gets more practice. This doesn’t mean one video will change your brain dramatically. It means repeated exposure can shape habits.</p>
@@ -482,11 +806,21 @@ footer {
 <p>If your phone is beside you, checking it is easy. If your running shoes are already outside your room, exercising becomes easier. Small environmental changes can reduce the amount of willpower you need.</p>
 <h3>Think about it</h3>
 <p>If someone observed your daily environment for one week, what would they predict you will become better at?</p>
-<h2>Chapter 14</h2>
-<h3>Breaking an Automatic Habit</h3>
-<p>Let’s take a simple habit: You come home after work. You sit on the sofa. You pick up your phone. You scroll for an hour. How did the habit become automatic?</p>
+  </div>
+  <div class="chapter-nav">
+    <a href="#chapter-12" class="nav-btn prev">← <span>Previous</span></a>
+    <button class="complete-btn" data-complete="13"><span>✓</span> Mark chapter complete</button>
+    <a href="#chapter-14" class="nav-btn next"><span>Next chapter</span> →</a>
+  </div>
+</section>
+
+<section class="chapter" id="chapter-14" data-chapter="14">
+  <div class="chapter-kicker">CHAPTER 14</div>
+  <h2>Breaking an Automatic Habit</h2>
+  <div class="chapter-body">
+    <p>Let’s take a simple habit: You come home after work. You sit on the sofa. You pick up your phone. You scroll for an hour. How did the habit become automatic?</p>
 <p>A useful model is:</p>
-<p>Cue → Routine → Reward</p>
+<div class="flow">Cue → Routine → Reward</div>
 <h3>Cue</h3>
 <p>Something starts the behaviour. Maybe: “I’m tired.”</p>
 <h3>Routine</h3>
@@ -494,15 +828,15 @@ footer {
 <h3>Reward</h3>
 <p>Something you receive: “Entertainment, relaxation or distraction.”</p>
 <p>The brain learns:</p>
-<p>Tired → scrolling → relief</p>
+<div class="flow">Tired → scrolling → relief</div>
 <p>Repeat this enough times and the pattern becomes easier to trigger.</p>
 <h3>Don’t fight the habit only at the final step</h3>
 <p>Suppose you try to use willpower after already opening the app. You are fighting the habit at its strongest point. Instead, change the environment around the cue. If you usually scroll after sitting on the sofa, put your phone in another room. Or replace the routine.</p>
-<p>Tired → make tea → sit outside for five minutes</p>
+<div class="flow">Tired → make tea → sit outside for five minutes</div>
 <p>Now the cue remains, but the routine changes.</p>
 <h3>Don’t remove every reward</h3>
 <p>If the phone gives you relaxation, you still need relaxation. Replace the behaviour with another way of achieving something similar. If you scroll because you’re bored, perhaps you need stimulation. If you scroll because you’re stressed, perhaps you need recovery. If you scroll because you feel lonely, perhaps you need connection. Changing the behaviour becomes easier when you understand the need behind it.</p>
-<h3>Start ridiculously small</h3>
+<p>Start ridiculously small</p>
 <p>Suppose you want to start exercising. Don’t begin with: “I will exercise for one hour every day for the rest of my life.” Begin with: “I will exercise for five minutes today.” The goal at first is not physical transformation. It is teaching your brain:</p>
 <p>This is something I do.</p>
 <p>Identity grows from repeated behaviour.</p>
@@ -510,38 +844,48 @@ footer {
 <p>Don’t expect perfection. Missing one day isn’t failure. The danger is the story afterward: “I missed today, so I’m useless.” That story can become another reason to stop. Instead: “I missed today. I’ll continue tomorrow.”</p>
 <h3>Think about it</h3>
 <p>What habit in your life is giving you a reward that you could get in a healthier or more useful way?</p>
-<h2>Chapter 15</h2>
-<h3>Becoming More Conscious</h3>
-<p>After reading all these chapters, you might wonder: “So how do I control my subconscious?” The answer is:</p>
+  </div>
+  <div class="chapter-nav">
+    <a href="#chapter-13" class="nav-btn prev">← <span>Previous</span></a>
+    <button class="complete-btn" data-complete="14"><span>✓</span> Mark chapter complete</button>
+    <a href="#chapter-15" class="nav-btn next"><span>Next chapter</span> →</a>
+  </div>
+</section>
+
+<section class="chapter" id="chapter-15" data-chapter="15">
+  <div class="chapter-kicker">CHAPTER 15</div>
+  <h2>Becoming More Conscious</h2>
+  <div class="chapter-body">
+    <p>After reading all these chapters, you might wonder: “So how do I control my subconscious?” The answer is:</p>
 <p>You don’t need to control everything.</p>
 <p>Trying to consciously control every thought would be exhausting. Your automatic mind exists for a reason. You want to be able to walk without thinking about every step. You want to recognize familiar faces instantly. You want experienced skills to become automatic. The goal is not to eliminate automatic behaviour. The goal is to become better at noticing when automatic behaviour is working against you.</p>
 <h3>Awareness creates a gap</h3>
 <p>Imagine:</p>
-<p>Trigger → Reaction</p>
+<div class="flow">Trigger → Reaction</div>
 <p>There is almost no space.</p>
 <p>Now imagine:</p>
-<p>Trigger → Awareness → Choice → Reaction</p>
+<div class="flow">Trigger → Awareness → Choice → Reaction</div>
 <p>That small middle section changes everything. Someone insults you. You notice anger. You pause. You choose whether to respond. You see an expensive product. You notice excitement. You ask whether you need it. You feel like procrastinating. You notice avoidance. You start for five minutes. You feel nervous before a presentation. You recognize the feeling. You remind yourself: “This is an old fear. I can still do this.” The situation may not change. But your relationship with the situation changes.</p>
-<h3>The Ten-Second Practice</h3>
+<p>The Ten-Second Practice</p>
 <p>You don’t need meditation for an hour. You don’t need a complicated psychological system. Start with ten seconds. Before an important decision, ask:</p>
-<ul><li>What am I feeling?</li></ul>
+<h3>1. What am I feeling?</h3>
 <p>Angry?</p>
 <p>Excited?</p>
 <p>Afraid?</p>
 <p>Bored?</p>
 <p>Pressured?</p>
-<ul><li>What am I about to do?</li></ul>
+<h3>2. What am I about to do?</h3>
 <p>Buy?</p>
 <p>Reply?</p>
 <p>Avoid?</p>
 <p>Agree?</p>
 <p>Quit?</p>
 <p>Scroll?</p>
-<ul><li>Why?</li></ul>
+<h3>3. Why?</h3>
 <p>What is actually driving the action?</p>
-<ul><li>Would I make the same decision after waiting ten minutes?</li></ul>
+<h3>4. Would I make the same decision after waiting ten minutes?</h3>
 <p>Sometimes yes. Sometimes no. That difference is valuable.</p>
-<h3>The Five Questions</h3>
+<p>The Five Questions</p>
 <p>You can also use these five questions whenever something feels automatic:</p>
 <p>What triggered me?</p>
 <p>What did I immediately think?</p>
@@ -549,26 +893,36 @@ footer {
 <p>What did I do?</p>
 <p>What happened afterward?</p>
 <p>After a few repetitions, patterns become visible. You may discover:</p>
-<p>“When I’m tired, I make impulsive purchases.”</p>
-<p>“When I’m anxious, I check my phone.”</p>
-<p>“When I’m criticised, I become defensive.”</p>
-<p>“When a task feels uncertain, I postpone it.”</p>
+<blockquote>“When I’m tired, I make impulsive purchases.”</blockquote>
+<blockquote>“When I’m anxious, I check my phone.”</blockquote>
+<blockquote>“When I’m criticised, I become defensive.”</blockquote>
+<blockquote>“When a task feels uncertain, I postpone it.”</blockquote>
 <p>That knowledge is powerful. Because once you can see a pattern, you can experiment with changing it.</p>
-<h2>Chapter 16</h2>
-<h3>Conclusion</h3>
-<h3>You Don’t Have to Believe Every Thought</h3>
+  </div>
+  <div class="chapter-nav">
+    <a href="#chapter-14" class="nav-btn prev">← <span>Previous</span></a>
+    <button class="complete-btn" data-complete="15"><span>✓</span> Mark chapter complete</button>
+    <a href="#chapter-16" class="nav-btn next"><span>Next chapter</span> →</a>
+  </div>
+</section>
+
+<section class="chapter" id="chapter-16" data-chapter="16">
+  <div class="chapter-kicker">CHAPTER 16</div>
+  <h2>Conclusion</h2>
+  <div class="chapter-body">
+    <p>You Don’t Have to Believe Every Thought</p>
 <p>Your mind will produce thoughts all day. Some will be useful. Some will be random. Some will be based on old experiences. Some will be emotional. Some will be wrong. And that’s okay. A thought appearing in your mind does not mean you have to believe it. Feeling afraid doesn’t mean you are in danger. Feeling that someone dislikes you doesn’t prove that they do. Wanting something doesn’t mean you need it. Feeling lazy doesn’t mean you are a lazy person. Remembering something confidently doesn’t guarantee that it happened exactly that way. Your brain is constantly trying to help you navigate the world.</p>
 <p>It predicts. It compares. It remembers. It simplifies. It protects. It repeats.</p>
 <p>Sometimes it gets things right. Sometimes it doesn’t. The interesting part is that you can learn to notice the difference.</p>
-<h3>The subconscious isn’t your enemy</h3>
+<p>The subconscious isn’t your enemy</p>
 <p>Your automatic mind helps you do thousands of things every day. It saves energy. It recognizes patterns. It makes familiar actions easier. It helps you respond quickly. The problem begins when an old pattern continues in a new situation where it no longer fits. The person who was once afraid of public speaking may still be afraid years later. The person who learned to check their phone whenever bored may continue doing it even when they no longer enjoy it. The person who was once told they were “not good at mathematics” may continue carrying that belief long after leaving school. The past can continue influencing the present. But influence is not destiny.</p>
-<h3>The most powerful skill is noticing</h3>
+<p>The most powerful skill is noticing</p>
 <p>You don’t have to become perfectly rational. Nobody is. You don’t have to remove every bias. You can’t. You don’t have to stop having emotions. You shouldn’t. You simply need to notice a little more. Notice the moment you reach for your phone. Notice the moment you become defensive. Notice the moment you assume something about another person. Notice the moment a discount suddenly looks irresistible. Notice the moment you compare yourself with someone else. Notice the moment you say:</p>
-<p>“That’s just who I am.”</p>
+<blockquote>“That’s just who I am.”</blockquote>
 <p>Then ask:</p>
-<p>“Is it really who I am—or is it something I have practised for a long time?”</p>
+<blockquote>“Is it really who I am—or is it something I have practised for a long time?”</blockquote>
 <p>That question can open a door.</p>
-<h3>One Last Experiment</h3>
+<p>One Last Experiment</p>
 <p>For the next seven days, don’t try to completely change yourself. Instead, keep a small mental diary. Whenever you catch yourself doing something automatically, write:</p>
 <p>What happened?</p>
 <p>What did I feel?</p>
@@ -579,17 +933,169 @@ footer {
 <p>They are tiny moments.</p>
 <p>A notification. A smell. A familiar song. A particular person. A certain time of day. A little boredom. A little fear. A little comparison. A little reward.</p>
 <p>Repeated thousands of times. These small things quietly shape a life.</p>
-<h3>The Mind Behind Your Mind</h3>
+<p>The Mind Behind Your Mind</p>
 <p>Every day, your conscious mind walks through a world already filled with suggestions from your past. Your habits suggest what to do. Your emotions suggest what to feel. Your memories suggest what to expect. Your environment suggests what is normal. Other people suggest what is desirable. Your brain suggests what is safe. And most of the time, you follow these suggestions without noticing them. But occasionally, you can stop. Take a breath. Look at the thought. Look at the feeling. Look at the habit.</p>
 <p>And ask:</p>
-<p>“Why am I doing this?”</p>
+<blockquote>“Why am I doing this?”</blockquote>
 <p>You may not always find the answer. That’s okay. The goal isn’t to understand every corner of your mind. The goal is simply to become a little more awake inside your own life. Because perhaps the most important difference between an automatic life and a conscious one is not the number of decisions we make. It is the number of decisions we notice ourselves making. And sometimes, a few seconds of awareness are enough to choose differently.</p>
 <p>Your mind will always suggest.</p>
 <p>You don’t always have to obey.</p>
-</article>
+  </div>
+  <div class="chapter-nav">
+    <a href="#chapter-15" class="nav-btn prev">← <span>Previous</span></a>
+    <button class="complete-btn" data-complete="16"><span>✓</span> Mark chapter complete</button>
+    <a href="#conclusion" class="nav-btn next"><span>Next chapter</span> →</a>
+  </div>
+</section>
 
-<footer>
-    © 2026 My Blog · The Mind Behind Your Mind
-</footer>
+
+    <section class="intro-card" id="conclusion">
+      <div class="chapter-kicker">THE END</div>
+      <h2 style="font-family:'Playfair Display';font-size:clamp(34px,4vw,52px);margin:8px 0 28px;letter-spacing:-.03em">The Mind Behind Your Mind</h2>
+      <p>Every day, your conscious mind walks through a world already filled with suggestions from your past. Your habits suggest what to do. Your emotions suggest what to feel. Your memories suggest what to expect. Your environment suggests what is normal. Other people suggest what is desirable. Your brain suggests what is safe. And most of the time, you follow these suggestions without noticing them.</p>
+      <p>But occasionally, you can stop. Take a breath. Look at the thought. Look at the feeling. Look at the habit.</p>
+      <blockquote>“Why am I doing this?”</blockquote>
+      <p>You may not always find the answer. That’s okay. The goal isn’t to understand every corner of your mind. The goal is simply to become a little more awake inside your own life.</p>
+      <p>Your mind will always suggest.</p>
+      <p><strong>You don’t always have to obey.</strong></p>
+    </section>
+
+    <div class="footer">© Mind & Meaning · The Mind Behind Your Mind</div>
+  </main>
+
+  <aside class="right-tools">
+    <div class="tool-card">
+      <div class="tool-label">Reader tools</div>
+      <div class="tool-title">Reading experience</div>
+      <div class="tool-row">
+        <button id="fontDown">A−</button>
+        <button id="fontReset">A</button>
+        <button id="fontUp">A+</button>
+        <button id="widthBtn">Width</button>
+      </div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-label">Find</div>
+      <div class="tool-title">Search this article</div>
+      <div class="search-box">
+        <input id="searchInput" placeholder="Search..." aria-label="Search article">
+      </div>
+      <div class="search-results" id="searchResults">Type a word or phrase.</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-label">Progress</div>
+      <div class="tool-title"><span id="doneCount">0</span> / 16 chapters completed</div>
+      <div style="height:6px;background:var(--panel-2);border-radius:99px;overflow:hidden">
+        <div id="doneBar" style="height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));transition:.3s"></div>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<script>
+const root = document.documentElement;
+const body = document.body;
+const progress = document.getElementById('progress');
+const progressText = document.getElementById('progressText');
+const tocLinks = [...document.querySelectorAll('.toc-item')];
+const chapters = [...document.querySelectorAll('.chapter')];
+
+function updateScrollProgress(){
+  const h = document.documentElement;
+  const max = h.scrollHeight - h.clientHeight;
+  const pct = max > 0 ? Math.round((window.scrollY / max) * 100) : 0;
+  progress.style.width = pct + '%';
+}
+window.addEventListener('scroll', updateScrollProgress, {passive:true});
+updateScrollProgress();
+
+document.getElementById('themeBtn').addEventListener('click', () => {
+  root.classList.toggle('light');
+  localStorage.setItem('mind-theme', root.classList.contains('light') ? 'light' : 'dark');
+});
+if(localStorage.getItem('mind-theme') === 'light') root.classList.add('light');
+
+document.getElementById('focusBtn').addEventListener('click', () => {
+  body.classList.toggle('focus');
+  localStorage.setItem('mind-focus', body.classList.contains('focus') ? '1' : '0');
+});
+if(localStorage.getItem('mind-focus') === '1') body.classList.add('focus');
+
+const savedSize = Number(localStorage.getItem('mind-font-size') || 18);
+let fontSize = savedSize;
+function applyFont(){
+  fontSize = Math.max(15, Math.min(23, fontSize));
+  root.style.setProperty('--font-size', fontSize + 'px');
+  localStorage.setItem('mind-font-size', fontSize);
+}
+document.getElementById('fontDown').onclick = () => {fontSize--; applyFont()};
+document.getElementById('fontUp').onclick = () => {fontSize++; applyFont()};
+document.getElementById('fontReset').onclick = () => {fontSize=18; applyFont()};
+let wide = false;
+document.getElementById('widthBtn').onclick = () => {
+  wide = !wide;
+  root.style.setProperty('--content', wide ? '900px' : '760px');
+};
+
+const done = JSON.parse(localStorage.getItem('mind-done') || '[]');
+function refreshDone(){
+  const unique = [...new Set(done)].filter(n => n >= 1 && n <= 16);
+  document.getElementById('doneCount').textContent = unique.length;
+  document.getElementById('doneBar').style.width = (unique.length / 16 * 100) + '%';
+  progressText.textContent = Math.round(unique.length / 16 * 100) + '% complete';
+  document.querySelectorAll('[data-complete]').forEach(btn => {
+    const n = Number(btn.dataset.complete);
+    const isDone = unique.includes(n);
+    btn.classList.toggle('done', isDone);
+    btn.innerHTML = isDone ? '<span>✓</span> Completed' : '<span>✓</span> Mark chapter complete';
+  });
+  tocLinks.forEach(a => {
+    const n = a.dataset.chapter;
+    a.classList.toggle('done', n !== 'intro' && unique.includes(Number(n)));
+  });
+}
+document.querySelectorAll('[data-complete]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const n = Number(btn.dataset.complete);
+    const idx = done.indexOf(n);
+    if(idx >= 0) done.splice(idx, 1); else done.push(n);
+    localStorage.setItem('mind-done', JSON.stringify(done));
+    refreshDone();
+  });
+});
+refreshDone();
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting){
+      const id = entry.target.id;
+      tocLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + id));
+    }
+  });
+}, {rootMargin:'-20% 0px -65% 0px', threshold:0});
+document.getElementById('intro') && observer.observe(document.getElementById('intro'));
+chapters.forEach(c => observer.observe(c));
+
+const searchInput = document.getElementById('searchInput');
+const searchResults = document.getElementById('searchResults');
+let lastQuery = '';
+searchInput.addEventListener('input', () => {
+  const q = searchInput.value.trim().toLowerCase();
+  if(!q) {
+    searchResults.textContent = 'Type a word or phrase.';
+    return;
+  }
+  const matches = chapters.filter(c => c.innerText.toLowerCase().includes(q));
+  searchResults.textContent = matches.length
+    ? matches.map(c => 'Chapter ' + c.dataset.chapter + ' — ' + c.querySelector('h2').innerText).join('\n')
+    : 'No chapter found.';
+});
+
+document.addEventListener('keydown', e => {
+  if(e.target.matches('input,textarea')) return;
+  if(e.key === '/') { e.preventDefault(); searchInput.focus(); }
+  if(e.key.toLowerCase() === 'f') document.getElementById('focusBtn').click();
+});
+</script>
 </body>
 </html>
