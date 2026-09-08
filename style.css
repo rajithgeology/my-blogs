@@ -1,0 +1,140 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    color: #222;
+    background: #ffffff;
+    line-height: 1.7;
+}
+
+.container {
+    width: 90%;
+    max-width: 900px;
+    margin: auto;
+}
+
+
+/* Navigation */
+
+header {
+    border-bottom: 1px solid #e5e5e5;
+    padding: 20px 0;
+}
+
+.nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 22px;
+}
+
+nav a {
+    text-decoration: none;
+    color: #333;
+    margin-left: 25px;
+}
+
+
+/* Hero */
+
+.hero {
+    padding: 100px 0 80px;
+    text-align: center;
+}
+
+.small-heading {
+    font-size: 13px;
+    letter-spacing: 3px;
+    margin-bottom: 15px;
+}
+
+.hero h2 {
+    font-size: 48px;
+    line-height: 1.2;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    max-width: 650px;
+    margin: auto;
+    color: #666;
+}
+
+
+/* Blog posts */
+
+.posts {
+    padding: 50px 0 100px;
+}
+
+.posts > .container > h2 {
+    margin-bottom: 25px;
+}
+
+.post-card {
+    border-top: 1px solid #ddd;
+    padding: 30px 0;
+}
+
+.date {
+    color: #777;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.post-card h3 {
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.post-card p {
+    color: #555;
+}
+
+.read-more {
+    display: inline-block;
+    margin-top: 15px;
+    text-decoration: none;
+    color: #000;
+    font-weight: bold;
+}
+
+
+/* Footer */
+
+footer {
+    border-top: 1px solid #e5e5e5;
+    padding: 30px 0;
+    text-align: center;
+    color: #777;
+}
+
+
+/* Mobile */
+
+@media (max-width: 600px) {
+
+    .hero {
+        padding: 70px 0;
+    }
+
+    .hero h2 {
+        font-size: 36px;
+    }
+
+    .nav {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    nav a {
+        margin: 0 10px;
+    }
+}
