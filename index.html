@@ -1,85 +1,511 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>My Blog</title>
+  <meta name="description" content="A personal space for thoughts, ideas, stories and reflections.">
+  <title>My Blog — Thoughts, Ideas & Stories</title>
 
-    <link rel="stylesheet" href="style.css">
+  <style>
+    :root {
+      --bg: #f7f6f2;
+      --surface: #ffffff;
+      --text: #171717;
+      --muted: #6f6f6a;
+      --line: #e4e2dc;
+      --accent: #171717;
+      --accent-text: #ffffff;
+      --max: 1120px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont,
+                   "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      width: min(var(--max), calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    /* Navigation */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(247, 246, 242, 0.88);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(228, 226, 220, 0.8);
+    }
+
+    .nav {
+      height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      font-size: 18px;
+      font-weight: 750;
+      letter-spacing: -0.4px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+      font-size: 14px;
+      color: #4f4f4b;
+    }
+
+    .nav-links a {
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .nav-cta {
+      padding: 9px 15px;
+      border: 1px solid var(--text);
+      border-radius: 999px;
+      color: var(--text) !important;
+    }
+
+    /* Hero */
+    .hero {
+      padding: 110px 0 95px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 25px;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 28px;
+      height: 1px;
+      background: #888;
+    }
+
+    .hero h1 {
+      max-width: 900px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(52px, 8vw, 92px);
+      font-weight: 500;
+      letter-spacing: -4px;
+      line-height: 0.98;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      font-weight: 400;
+    }
+
+    .hero-copy {
+      max-width: 650px;
+      margin-top: 30px;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.8;
+    }
+
+    /* Latest article */
+    .section {
+      padding: 85px 0;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+
+    .section-heading h2 {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 38px;
+      font-weight: 500;
+      letter-spacing: -1px;
+    }
+
+    .section-heading span {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .article-card {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      min-height: 390px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      overflow: hidden;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .article-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.07);
+    }
+
+    .article-content {
+      padding: 55px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .article-meta {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+
+    .article-title {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(34px, 4vw, 52px);
+      line-height: 1.08;
+      font-weight: 500;
+      letter-spacing: -1.7px;
+      max-width: 620px;
+    }
+
+    .article-subtitle {
+      margin-top: 20px;
+      max-width: 570px;
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    .read-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      width: fit-content;
+      margin-top: 32px;
+      padding: 13px 20px;
+      background: var(--accent);
+      color: var(--accent-text);
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 650;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    .read-button:hover {
+      transform: translateX(3px);
+      opacity: 0.88;
+    }
+
+    .read-button .arrow {
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .article-visual {
+      position: relative;
+      min-height: 390px;
+      background:
+        radial-gradient(circle at 30% 25%, rgba(255,255,255,.95) 0 3%, transparent 3.5%),
+        radial-gradient(circle at 72% 68%, rgba(255,255,255,.75) 0 2%, transparent 2.5%),
+        linear-gradient(135deg, #d9d6ce, #b9b5ab);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .article-visual::before {
+      content: "";
+      position: absolute;
+      width: 290px;
+      height: 290px;
+      border: 1px solid rgba(255,255,255,.75);
+      border-radius: 50%;
+    }
+
+    .article-visual::after {
+      content: "";
+      position: absolute;
+      width: 190px;
+      height: 190px;
+      border: 1px solid rgba(255,255,255,.55);
+      border-radius: 50%;
+    }
+
+    .visual-word {
+      position: relative;
+      z-index: 2;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 27px;
+      font-style: italic;
+      color: #262522;
+      text-align: center;
+      line-height: 1.1;
+    }
+
+    /* About */
+    .about {
+      display: grid;
+      grid-template-columns: 0.8fr 1.2fr;
+      gap: 80px;
+      padding: 80px 0 110px;
+      border-top: 1px solid var(--line);
+    }
+
+    .about-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-weight: 700;
+      color: var(--muted);
+    }
+
+    .about h2 {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 42px;
+      line-height: 1.15;
+      font-weight: 500;
+      letter-spacing: -1px;
+      margin-bottom: 20px;
+    }
+
+    .about p {
+      color: var(--muted);
+      font-size: 17px;
+      max-width: 680px;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 28px 0;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* Mobile */
+    @media (max-width: 760px) {
+      .container {
+        width: min(100% - 30px, var(--max));
+      }
+
+      .nav {
+        height: 68px;
+      }
+
+      .nav-links {
+        gap: 15px;
+      }
+
+      .nav-cta {
+        display: none;
+      }
+
+      .hero {
+        padding: 75px 0 65px;
+      }
+
+      .hero h1 {
+        font-size: clamp(48px, 15vw, 70px);
+        letter-spacing: -3px;
+      }
+
+      .hero-copy {
+        font-size: 16px;
+      }
+
+      .section {
+        padding: 60px 0;
+      }
+
+      .section-heading {
+        display: block;
+      }
+
+      .section-heading span {
+        display: block;
+        margin-top: 8px;
+      }
+
+      .article-card {
+        grid-template-columns: 1fr;
+      }
+
+      .article-visual {
+        order: -1;
+        min-height: 250px;
+      }
+
+      .article-content {
+        padding: 32px 26px 38px;
+      }
+
+      .about {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 60px 0 75px;
+      }
+
+      .about h2 {
+        font-size: 35px;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-    <header>
-        <div class="container nav">
-            <h1 class="logo">My </h1>
+<header>
+  <div class="container nav">
+    <a class="brand" href="index.html">My Blog</a>
 
-            <nav>
-                <a href="index.html">Home</a>
-                <a href="my-first-blog.html">Blog</a>
-            </nav>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="my-first-blog.html">Blog</a>
+      <a class="nav-cta" href="#about">About</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <section class="hero">
+    <div class="container">
+      <div class="eyebrow">A personal space</div>
+
+      <h1>
+        Thoughts worth <em>thinking</em> about.
+      </h1>
+
+      <p class="hero-copy">
+        Ideas, observations and reflections about the things that quietly
+        shape the way we think, behave and experience everyday life.
+      </p>
+    </div>
+  </section>
+
+
+  <section class="section">
+    <div class="container">
+
+      <div class="section-heading">
+        <h2>Latest writing</h2>
+        <span>01 — First article</span>
+      </div>
+
+      <article class="article-card">
+
+        <div class="article-content">
+
+          <div class="article-meta">
+            September 8, 2026 · Psychology
+          </div>
+
+          <h2 class="article-title">
+            The Mind Behind Your Mind
+          </h2>
+
+          <p class="article-subtitle">
+            How your subconscious quietly shapes everyday life —
+            from the decisions you make to the habits you barely notice.
+          </p>
+
+          <!-- IMPORTANT: this points directly to the uploaded article -->
+          <a class="read-button" href="./my-first-blog.html">
+            Read the article
+            <span class="arrow">→</span>
+          </a>
+
         </div>
-    </header>
 
-
-    <main>
-
-        <section class="hero">
-            <div class="container">
-
-                <p class="small-heading">WELCOME</p>
-
-                <h2>Thoughts, Ideas & Stories</h2>
-
-                <p>
-                    A personal space where I write about things
-                    I find interesting, meaningful and worth sharing.
-                </p>
-
-            </div>
-        </section>
-
-
-        <section class="posts">
-
-            <div class="container">
-
-                <h2>Latest Post</h2>
-
-                <article class="post-card">
-
-                    <p class="date">September 8, 2026</p>
-
-                    <h3>
-                        My First Blog Post
-                    </h3>
-
-                    <p>
-                        A short introduction to my first blog post.
-                        Click below to read the complete article.
-                    </p>
-
-                    <a class="read-more" href="my-first-blog.html">
-                        Read article →
-                    </a>
-
-                </article>
-
-            </div>
-
-        </section>
-
-    </main>
-
-
-    <footer>
-        <div class="container">
-            <p>© 2026 My Blog</p>
+        <div class="article-visual" aria-hidden="true">
+          <div class="visual-word">
+            The<br>Mind<br>Behind<br>Your Mind
+          </div>
         </div>
-    </footer>
+
+      </article>
+
+    </div>
+  </section>
+
+
+  <section class="container" id="about">
+    <div class="about">
+
+      <div>
+        <div class="about-label">About this blog</div>
+      </div>
+
+      <div>
+        <h2>A place to slow down and think.</h2>
+
+        <p>
+          This is a personal collection of ideas, stories and observations.
+          Some are about psychology and human behaviour; others may simply
+          be things that make everyday life a little more interesting.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+
+<footer>
+  <div class="container footer-inner">
+    <span>© 2026 My Blog</span>
+    <span>Thoughts, ideas & stories</span>
+  </div>
+</footer>
 
 </body>
-
 </html>
